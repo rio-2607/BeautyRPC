@@ -1,6 +1,6 @@
 package com.beautyboss.slogen.rpc.client.thrift;
 
-import com.beautyboss.slogen.rpc.Service;
+import com.beautyboss.slogen.rpc.service.Service;
 import com.beautyboss.slogen.rpc.exceptions.RpcException;
 import com.beautyboss.slogen.rpc.lb.LoadBalance;
 import com.beautyboss.slogen.rpc.lb.impl.RRLoadBalance;
@@ -162,18 +162,6 @@ public class ClientProxy implements MethodInterceptor {
                         logger.info("clear pool start {}", System.currentTimeMillis());
                         pool.clear(old.getKey());
                         logger.info("clear pool end {}", System.currentTimeMillis());
-
-//                        boolean changed = true;
-//                        for (int j = 0; j < news.size(); j++) {
-//                            if (old.getKey().equals(news.get(j).getKey())) {
-//                                changed = false;
-//                                break;
-//                            }
-//                        }
-//
-//                        if (changed) {
-//                            pool.clear(old.getKey());
-//                        }
                     }
                 }
 

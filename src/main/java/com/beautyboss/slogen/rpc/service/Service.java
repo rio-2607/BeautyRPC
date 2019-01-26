@@ -1,4 +1,4 @@
-package com.beautyboss.slogen.rpc;
+package com.beautyboss.slogen.rpc.service;
 
 import org.apache.commons.lang.StringUtils;
 

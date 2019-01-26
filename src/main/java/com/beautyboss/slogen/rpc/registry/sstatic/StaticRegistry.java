@@ -1,7 +1,7 @@
 package com.beautyboss.slogen.rpc.registry.sstatic;
 
-import com.beautyboss.slogen.rpc.Server;
-import com.beautyboss.slogen.rpc.Service;
+import com.beautyboss.slogen.rpc.service.Server;
+import com.beautyboss.slogen.rpc.service.Service;
 import com.beautyboss.slogen.rpc.common.Constants;
 import com.beautyboss.slogen.rpc.registry.NotifyListener;
 import com.beautyboss.slogen.rpc.registry.support.AbstractRegistry;

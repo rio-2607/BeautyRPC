@@ -1,7 +1,7 @@
 package com.beautyboss.slogen.rpc.service.thrift;
 
-import com.beautyboss.slogen.rpc.Service;
 import com.beautyboss.slogen.rpc.exceptions.ServiceException;
+import com.beautyboss.slogen.rpc.service.Service;
 import com.beautyboss.slogen.rpc.util.NetUtil;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;

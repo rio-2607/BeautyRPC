@@ -1,6 +1,6 @@
 package com.beautyboss.slogen.rpc.registry.support;
 
-import com.beautyboss.slogen.rpc.Service;
+import com.beautyboss.slogen.rpc.service.Service;
 import com.beautyboss.slogen.rpc.common.ConcurrentHashSet;
 import com.beautyboss.slogen.rpc.common.Constants;
 import com.beautyboss.slogen.rpc.common.NamedThreadFactory;

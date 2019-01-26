@@ -1,6 +1,6 @@
 package com.beautyboss.slogen.rpc.lb.impl;
 
-import com.beautyboss.slogen.rpc.Service;
+import com.beautyboss.slogen.rpc.service.Service;
 import com.beautyboss.slogen.rpc.lb.LoadBalance;
 
 import java.util.List;

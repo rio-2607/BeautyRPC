@@ -1,6 +1,6 @@
 package com.beautyboss.slogen.rpc.pool;
 
-import com.beautyboss.slogen.rpc.Server;
+import com.beautyboss.slogen.rpc.service.Server;
 
 /**
  * Author : Slogen

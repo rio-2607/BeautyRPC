@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
  * Author : Slogen
  * Date   : 2019/1/26
  */
-public class ThriftServiceConfig implements Cloneable{
-
-    private static final Logger logger = LoggerFactory.getLogger(ThriftServiceConfig.class);
+public class ThriftServiceConfig implements Cloneable {
+    private static final Logger logger = LoggerFactory
+            .getLogger(ThriftServiceConfig.class);
 
     private static ThriftServiceConfig config;
 
@@ -101,5 +101,4 @@ public class ThriftServiceConfig implements Cloneable{
 
         return config;
     }
-
 }

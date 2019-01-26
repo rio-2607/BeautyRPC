@@ -1,6 +1,6 @@
 package com.beautyboss.slogen.rpc.client.thrift;
 
-import com.beautyboss.slogen.rpc.Server;
+import com.beautyboss.slogen.rpc.service.Server;
 import com.beautyboss.slogen.rpc.exceptions.RpcException;
 import com.beautyboss.slogen.rpc.pool.ConnFactory;
 import org.apache.thrift.transport.TSocket;

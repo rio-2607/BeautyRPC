@@ -34,7 +34,7 @@ public class ThriftScannerConfig implements BeanDefinitionRegistryPostProcessor,
     /**
      * 服务组名称
      */
-    private String serviceGroupName = "am";
+    private String serviceGroupName = "default";
 
     @Override
     public void postProcessBeanFactory(

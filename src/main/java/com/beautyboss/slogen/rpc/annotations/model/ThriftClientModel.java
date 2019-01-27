@@ -61,7 +61,7 @@ public class ThriftClientModel extends AbstractThriftModel {
         }
 
         GenericBeanDefinition thriftService = new GenericBeanDefinition();
-        thriftService.setBeanClassName(ThriftClient.class.getName());
+        thriftService.setBeanClassName(com.beautyboss.slogen.rpc.client.thrift.ThriftClient.class.getName());
         thriftService.setScope(ConfigurableBeanFactory.SCOPE_SINGLETON);
         thriftService.setDestroyMethodName("stop");
         thriftService.setInitMethodName("init");

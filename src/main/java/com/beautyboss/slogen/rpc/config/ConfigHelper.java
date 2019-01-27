@@ -20,18 +20,23 @@ public class ConfigHelper {
          * 对于相同的key,application-{env}.properties会覆盖application.properties的设置
          */
         PropertiesConfiguration prop;
-        File file = new File(Constants.DEFAULT_CONFIG_PROPERTIES);
-        if(file.exists()) {
+        if(exists(Constants.DEFAULT_CONFIG_PROPERTIES)) {
             prop = new PropertiesConfiguration(Constants.DEFAULT_CONFIG_PROPERTIES);
         } else {
             prop = new PropertiesConfiguration(Constants.CONFIG_PROPERTIES);
             String env = prop.getString(Constants.SPRINGBOOT_ENV);
-            if(StringUtils.isNotEmpty(env)) {
+            if(StringUtils.isNotEmpty(env) && exists(String.format(Constants.SPRINGBOOT_ENV_PROPERTIES,env))) {
                 PropertiesConfiguration envProp = new PropertiesConfiguration(String.format(Constants.SPRINGBOOT_ENV_PROPERTIES,env));
                 prop.copy(envProp);
             }
         }
         return prop;
+    }
+
+
+    private static boolean exists(String fileName) {
+        File file = new File(fileName);
+        return file.exists();
     }
 
 }

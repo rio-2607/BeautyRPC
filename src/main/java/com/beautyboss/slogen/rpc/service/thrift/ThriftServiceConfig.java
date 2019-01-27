@@ -1,9 +1,11 @@
 package com.beautyboss.slogen.rpc.service.thrift;
 
 import com.beautyboss.slogen.rpc.common.Constants;
+import com.beautyboss.slogen.rpc.config.ConfigHelper;
 import com.beautyboss.slogen.rpc.registry.RegistryConfig;
 import com.beautyboss.slogen.rpc.util.JsonUtil;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,9 +48,9 @@ public class ThriftServiceConfig implements Cloneable {
         PropertiesConfiguration prop;
 
         try {
-            prop = new PropertiesConfiguration(Constants.DEFAULT_CONFIG_PROPERTIES);
+            prop = ConfigHelper.getProperties();
         } catch (Exception e) {
-            throw new RuntimeException("no thrift-rpc.properties file found", e);
+            throw new RuntimeException("no rpc config file found", e);
         }
 
         config = new ThriftServiceConfig();
@@ -101,4 +103,5 @@ public class ThriftServiceConfig implements Cloneable {
 
         return config;
     }
+
 }

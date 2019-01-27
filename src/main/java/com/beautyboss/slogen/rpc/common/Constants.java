@@ -5,7 +5,11 @@ package com.beautyboss.slogen.rpc.common;
  * Date   : 2019/1/26
  */
 public class Constants {
+
     public static final String  DEFAULT_CONFIG_PROPERTIES  = "thrift-rpc.properties";
+    public static final String CONFIG_PROPERTIES = "application.properties";
+    public static final String SPRINGBOOT_ENV = "spring.profiles.active";
+    public static final String SPRINGBOOT_ENV_PROPERTIES = "application-%s.properties";
 
 
     /* thrift client default config */

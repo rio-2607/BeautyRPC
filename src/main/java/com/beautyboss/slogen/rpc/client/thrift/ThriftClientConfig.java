@@ -1,6 +1,7 @@
 package com.beautyboss.slogen.rpc.client.thrift;
 
 import com.beautyboss.slogen.rpc.common.Constants;
+import com.beautyboss.slogen.rpc.config.ConfigHelper;
 import com.beautyboss.slogen.rpc.pool.ConnPoolConfig;
 import com.beautyboss.slogen.rpc.registry.RegistryConfig;
 import com.beautyboss.slogen.rpc.util.JsonUtil;
@@ -43,7 +44,7 @@ public class ThriftClientConfig implements Cloneable {
             prop.load(inputStream);
             prop.setDelimiterParsingDisabled(false);
         } catch (ConfigurationException e) {
-            throw new RuntimeException("no thrift-rpc.properties file found", e);
+            throw new RuntimeException("no rpc config file found", e);
         }
 
         initConfig(prop);
@@ -54,10 +55,10 @@ public class ThriftClientConfig implements Cloneable {
         PropertiesConfiguration prop;
 
         try {
-            prop = new PropertiesConfiguration(configFile);
+            prop = ConfigHelper.getProperties();
             prop.setDelimiterParsingDisabled(false);
         } catch (Exception e) {
-            throw new RuntimeException("no thrift-rpc.properties file found", e);
+            throw new RuntimeException("no rpc config file found", e);
         }
 
         initConfig(prop);

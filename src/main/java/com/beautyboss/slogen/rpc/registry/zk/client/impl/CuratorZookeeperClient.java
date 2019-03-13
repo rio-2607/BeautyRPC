@@ -27,8 +27,7 @@ import java.util.List;
 public class CuratorZookeeperClient extends AbstractZookeeperClient<CuratorWatcher> {
     private final CuratorFramework client;
 
-    public CuratorFramework getClient()
-    {
+    public CuratorFramework getClient() {
         return client;
     }
 
@@ -127,8 +126,7 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient<CuratorWatch
     }
 
     @Override
-    protected CuratorWatcher createTargetChildListener(String path, ChildListener listener)
-    {
+    protected CuratorWatcher createTargetChildListener(String path, ChildListener listener) {
         return new CuratorWatcherImpl(listener);
     }
 
@@ -149,8 +147,7 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient<CuratorWatch
     }
 
     @Override
-    public Object readData(String path, boolean ifReturnNull)
-    {
+    public Object readData(String path, boolean ifReturnNull) {
         try {
             return client.getData().forPath(path);
         } catch (Exception e) {
@@ -159,8 +156,7 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient<CuratorWatch
     }
 
     @Override
-    public void writeData(String path, Object data)
-    {
+    public void writeData(String path, Object data) {
         throw new IllegalStateException("unimplement method");
     }
 }

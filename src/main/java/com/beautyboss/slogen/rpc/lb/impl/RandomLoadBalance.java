@@ -14,8 +14,7 @@ public class RandomLoadBalance implements LoadBalance {
     private Random rand = new Random();
 
     @Override
-    public Service select(List<Service> services)
-    {
+    public Service select(List<Service> services) {
         return services.get(rand.nextInt(services.size()));
     }
 }

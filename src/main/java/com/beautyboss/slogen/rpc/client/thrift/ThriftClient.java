@@ -44,7 +44,6 @@ public class ThriftClient {
     }
 
     /**
-     *
      * @param configFile 指定配置文件
      */
     public ThriftClient(String configFile) {
@@ -56,7 +55,6 @@ public class ThriftClient {
     }
 
     /**
-     *
      * @return 新创建一个实例
      */
     public static ThriftClient getInstance() {
@@ -65,18 +63,17 @@ public class ThriftClient {
 
     /**
      * 增加一个代理到客户端池
+     *
      * @param proxy
      */
-    public void add(ClientProxy proxy)
-    {
+    public void add(ClientProxy proxy) {
         proxyList.add(proxy);
     }
 
     /**
      * 初始化客户端
      */
-    public void init()
-    {
+    public void init() {
         if (!inited.compareAndSet(false, true)) {
             return;
         }
@@ -120,8 +117,7 @@ public class ThriftClient {
     /**
      * 关闭客户端
      */
-    public void stop()
-    {
+    public void stop() {
         if (!inited.get()) {
             logger.warn("client not start, so stop do nothing");
             return;
@@ -143,8 +139,7 @@ public class ThriftClient {
     /**
      * 获取客户端实例
      */
-    public TServiceClient getClient(Class<?> ifaceClass)
-    {
+    public TServiceClient getClient(Class<?> ifaceClass) {
         if (!inited.get()) {
             throw new IllegalStateException("ThriftClient not inited");
         }
@@ -152,13 +147,11 @@ public class ThriftClient {
         return unmodifyClients.get(ifaceClass.getName());
     }
 
-    public List<ClientProxy> getProxyList()
-    {
+    public List<ClientProxy> getProxyList() {
         return proxyList;
     }
 
-    public void setProxyList(List<ClientProxy> proxyList)
-    {
+    public void setProxyList(List<ClientProxy> proxyList) {
         this.proxyList = proxyList;
     }
 }

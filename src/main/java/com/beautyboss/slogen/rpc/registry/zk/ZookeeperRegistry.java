@@ -36,8 +36,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
     private int sessionTimeout = Constants.DEFAULT_SESSION_TIMEOUT;
     private String client = ZookeeperClient.ZK_CURATOR_CLIENT;
 
-    public void init()
-    {
+    public void init() {
         if (getHosts() == null) {
             throw new IllegalStateException("registry address == null");
         }
@@ -67,8 +66,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
         zkClient.addStateListener(new StateListener() {
             private boolean firstConnected = true;
 
-            public void stateChanged(int state)
-            {
+            public void stateChanged(int state) {
                 logger.debug("zk state change " + state);
                 if (state == CONNECTED) {
                     logger.info("state change to connected " + firstConnected);
@@ -86,14 +84,12 @@ public class ZookeeperRegistry extends FailbackRegistry {
     }
 
     @Override
-    public boolean isAvailable()
-    {
+    public boolean isAvailable() {
         return zkClient.isConnected();
     }
 
     @Override
-    public void destroy()
-    {
+    public void destroy() {
         if (!destroyed.compareAndSet(false, true)) {
             return;
         }
@@ -106,8 +102,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
         }
     }
 
-    protected void doRegister(Service service)
-    {
+    protected void doRegister(Service service) {
         try {
             zkClient.create(toUrlPath(service), isEphemeral());
         } catch (Throwable e) {
@@ -116,8 +111,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
         }
     }
 
-    protected void doUnregister(Service service)
-    {
+    protected void doUnregister(Service service) {
         try {
             zkClient.delete(toUrlPath(service));
         } catch (Throwable e) {
@@ -126,8 +120,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
         }
     }
 
-    protected void doSubscribe(final String service, final NotifyListener listener)
-    {
+    protected void doSubscribe(final String service, final NotifyListener listener) {
         try {
             List<Service> services = new ArrayList<Service>();
             String path = toSubscribePath(service);
@@ -139,8 +132,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
             ChildListener zkListener = listeners.get(listener);
             if (zkListener == null) {
                 listeners.putIfAbsent(listener, new ChildListener() {
-                    public void childChanged(String parentPath, List<String> currentChilds)
-                    {
+                    public void childChanged(String parentPath, List<String> currentChilds) {
                         logger.debug("path is updated: " + parentPath + "," + currentChilds);
                         ZookeeperRegistry.this.notify(service, listener, toUrlsWithoutEmpty(service, currentChilds));
                     }
@@ -161,8 +153,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
         }
     }
 
-    protected void doUnsubscribe(String service, NotifyListener listener)
-    {
+    protected void doUnsubscribe(String service, NotifyListener listener) {
         ConcurrentMap<NotifyListener, ChildListener> listeners = zkListeners.get(service);
         if (listeners != null) {
             ChildListener zkListener = listeners.get(listener);
@@ -172,36 +163,30 @@ public class ZookeeperRegistry extends FailbackRegistry {
         }
     }
 
-    private String toRootDir()
-    {
+    private String toRootDir() {
         if (root.equals(Constants.PATH_SEPARATOR)) {
             return root;
         }
         return root + Constants.PATH_SEPARATOR;
     }
 
-    private String toSubscribePath(String service)
-    {
+    private String toSubscribePath(String service) {
         return toRootDir() + service + Constants.PATH_SEPARATOR + Service.PROVIDER_CATEGORY;
     }
 
-    private String toServicePath(Service service)
-    {
+    private String toServicePath(Service service) {
         return toRootDir() + Service.encode(service.name);
     }
 
-    private String toCategoryPath(Service service)
-    {
+    private String toCategoryPath(Service service) {
         return toServicePath(service) + Constants.PATH_SEPARATOR + service.category;
     }
 
-    private String toUrlPath(Service service)
-    {
+    private String toUrlPath(Service service) {
         return toCategoryPath(service) + Constants.PATH_SEPARATOR + Service.encode(service.toString());
     }
 
-    private List<Service> toUrlsWithoutEmpty(String service, List<String> providers)
-    {
+    private List<Service> toUrlsWithoutEmpty(String service, List<String> providers) {
         List<Service> services = new ArrayList<Service>();
         if (providers != null && providers.size() > 0) {
             for (String provider : providers) {
@@ -217,38 +202,31 @@ public class ZookeeperRegistry extends FailbackRegistry {
         return services;
     }
 
-    public String getRoot()
-    {
+    public String getRoot() {
         return root;
     }
 
-    public void setRoot(String root)
-    {
+    public void setRoot(String root) {
         this.root = root;
     }
 
-    public int getTimeout()
-    {
+    public int getTimeout() {
         return timeout;
     }
 
-    public void setTimeout(int timeout)
-    {
+    public void setTimeout(int timeout) {
         this.timeout = timeout;
     }
 
-    public int getSessionTimeout()
-    {
+    public int getSessionTimeout() {
         return sessionTimeout;
     }
 
-    public void setSessionTimeout(int sessionTimeout)
-    {
+    public void setSessionTimeout(int sessionTimeout) {
         this.sessionTimeout = sessionTimeout;
     }
 
-    public boolean isEphemeral()
-    {
+    public boolean isEphemeral() {
         return ephemeral;
     }
     // public void setEphemeral(boolean ephemeral)
@@ -256,13 +234,11 @@ public class ZookeeperRegistry extends FailbackRegistry {
     // this.ephemeral = ephemeral;
     // }
 
-    public String getClient()
-    {
+    public String getClient() {
         return client;
     }
 
-    public void setClient(String client)
-    {
+    public void setClient(String client) {
         this.client = client;
     }
 }

@@ -35,9 +35,9 @@ public class ThriftClientModel extends AbstractThriftModel {
 
         for (BeanDefinitionHolder holder : beanDefinitions) {
 
-            if(holder.getBeanDefinition() instanceof ScannedGenericBeanDefinition){
+            if (holder.getBeanDefinition() instanceof ScannedGenericBeanDefinition) {
 
-                final ScannedGenericBeanDefinition beanDefinition = (ScannedGenericBeanDefinition)holder.getBeanDefinition();
+                final ScannedGenericBeanDefinition beanDefinition = (ScannedGenericBeanDefinition) holder.getBeanDefinition();
                 AnnotationMetadata metadata = beanDefinition.getMetadata();
                 String thriftServiceClass = metadata.getClassName();
                 try {

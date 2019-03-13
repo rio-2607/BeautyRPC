@@ -38,9 +38,9 @@ public class ThriftServerModel extends AbstractThriftModel {
 
         for (BeanDefinitionHolder holder : beanDefinitions) {
 
-            if(holder.getBeanDefinition() instanceof ScannedGenericBeanDefinition){
+            if (holder.getBeanDefinition() instanceof ScannedGenericBeanDefinition) {
 
-                final ScannedGenericBeanDefinition beanDefinition = (ScannedGenericBeanDefinition)holder.getBeanDefinition();
+                final ScannedGenericBeanDefinition beanDefinition = (ScannedGenericBeanDefinition) holder.getBeanDefinition();
                 AnnotationMetadata metadata = beanDefinition.getMetadata();
                 String thriftServiceClass = metadata.getClassName();
                 try {
@@ -52,12 +52,12 @@ public class ThriftServerModel extends AbstractThriftModel {
                     List<Class<?>> allInterfaces = ClassUtils.getAllInterfaces(thriftServiceClazz);
                     String superClassName = null;
                     for (Class<?> clazz : allInterfaces) {
-                        if(clazz.getName().endsWith("$Iface")) {
+                        if (clazz.getName().endsWith("$Iface")) {
                             superClassName = clazz.getName().split("\\$Iface")[0];
                             break;
                         }
                     }
-                    if(StringUtils.isBlank(superClassName)) {
+                    if (StringUtils.isBlank(superClassName)) {
                         continue;
                     }
                     BeanDefinition serviceProxy = new GenericBeanDefinition();

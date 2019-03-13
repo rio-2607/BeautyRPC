@@ -38,8 +38,7 @@ public class RegistryContainer {
         }
     }
 
-    public static Registry getRegistry(RegistryConfig config)
-    {
+    public static Registry getRegistry(RegistryConfig config) {
         if (config.addrs == null || config.addrs.isEmpty()) {
             return null;
         }
@@ -67,8 +66,7 @@ public class RegistryContainer {
         }
     }
 
-    public static Registry createRegistry(RegistryConfig config)
-    {
+    public static Registry createRegistry(RegistryConfig config) {
         if (config.addrs == null || config.addrs.isEmpty()) {
             return null;
         }

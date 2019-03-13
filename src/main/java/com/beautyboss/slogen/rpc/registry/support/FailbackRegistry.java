@@ -34,12 +34,10 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     protected int retryPeriod = Constants.DEFAULT_RETRY_PERIOD;
     protected boolean checkWhenStartup = Constants.DEFAULT_CHECK_WHEN_STARTUP;
 
-    public void init()
-    {
+    public void init() {
         logger.debug("init failback register");
         this.retryFuture = retryExecutor.scheduleWithFixedDelay(new Runnable() {
-            public void run()
-            {
+            public void run() {
                 // 检测并连接注册中心
                 try {
                     retry();
@@ -50,38 +48,31 @@ public abstract class FailbackRegistry extends AbstractRegistry {
         }, retryPeriod, retryPeriod, TimeUnit.MILLISECONDS);
     }
 
-    public Future<?> getRetryFuture()
-    {
+    public Future<?> getRetryFuture() {
         return retryFuture;
     }
 
-    public Set<Service> getFailedRegistered()
-    {
+    public Set<Service> getFailedRegistered() {
         return failedRegistered;
     }
 
-    public Set<Service> getFailedUnregistered()
-    {
+    public Set<Service> getFailedUnregistered() {
         return failedUnregistered;
     }
 
-    public Map<String, Set<NotifyListener>> getFailedSubscribed()
-    {
+    public Map<String, Set<NotifyListener>> getFailedSubscribed() {
         return failedSubscribed;
     }
 
-    public Map<String, Set<NotifyListener>> getFailedUnsubscribed()
-    {
+    public Map<String, Set<NotifyListener>> getFailedUnsubscribed() {
         return failedUnsubscribed;
     }
 
-    public Map<String, Map<NotifyListener, List<Service>>> getFailedNotified()
-    {
+    public Map<String, Map<NotifyListener, List<Service>>> getFailedNotified() {
         return failedNotified;
     }
 
-    private void addFailedSubscribed(String service, NotifyListener listener)
-    {
+    private void addFailedSubscribed(String service, NotifyListener listener) {
         Set<NotifyListener> listeners = failedSubscribed.get(service);
         if (listeners == null) {
             failedSubscribed.putIfAbsent(service, new ConcurrentHashSet<NotifyListener>());
@@ -90,8 +81,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
         listeners.add(listener);
     }
 
-    private void removeFailedSubscribed(String service, NotifyListener listener)
-    {
+    private void removeFailedSubscribed(String service, NotifyListener listener) {
         Set<NotifyListener> listeners = failedSubscribed.get(service);
         if (listeners != null) {
             listeners.remove(listener);
@@ -107,8 +97,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     }
 
     @Override
-    public void register(Service service)
-    {
+    public void register(Service service) {
         super.register(service);
         failedRegistered.remove(service);
         failedUnregistered.remove(service);
@@ -133,8 +122,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     }
 
     @Override
-    public void unregister(Service service)
-    {
+    public void unregister(Service service) {
         super.unregister(service);
         failedRegistered.remove(service);
         failedUnregistered.remove(service);
@@ -159,8 +147,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     }
 
     @Override
-    public void subscribe(String service, NotifyListener listener)
-    {
+    public void subscribe(String service, NotifyListener listener) {
         super.subscribe(service, listener);
         removeFailedSubscribed(service, listener);
         try {
@@ -183,8 +170,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     }
 
     @Override
-    public void unsubscribe(String service, NotifyListener listener)
-    {
+    public void unsubscribe(String service, NotifyListener listener) {
         super.unsubscribe(service, listener);
         removeFailedSubscribed(service, listener);
         try {
@@ -213,8 +199,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     }
 
     @Override
-    protected void notify(String service, NotifyListener listener, List<Service> services)
-    {
+    protected void notify(String service, NotifyListener listener, List<Service> services) {
         if (service == null) {
             throw new IllegalArgumentException("notify service == null");
         }
@@ -236,14 +221,12 @@ public abstract class FailbackRegistry extends AbstractRegistry {
         }
     }
 
-    protected void doNotify(String service, NotifyListener listener, List<Service> services)
-    {
+    protected void doNotify(String service, NotifyListener listener, List<Service> services) {
         super.notify(service, listener, services);
     }
 
     @Override
-    protected void recover() throws Exception
-    {
+    protected void recover() throws Exception {
         logger.debug("recover registers and subscribes");
 
         // register
@@ -268,8 +251,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     }
 
     // 重试失败的动作
-    protected void retry()
-    {
+    protected void retry() {
         logger.debug("registry retry check");
 
         if (!failedRegistered.isEmpty()) {
@@ -407,8 +389,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     }
 
     @Override
-    public void destroy()
-    {
+    public void destroy() {
         super.destroy();
         try {
             retryFuture.cancel(true);
@@ -427,23 +408,19 @@ public abstract class FailbackRegistry extends AbstractRegistry {
 
     protected abstract void doUnsubscribe(String service, NotifyListener listener);
 
-    public int getRetryPeriod()
-    {
+    public int getRetryPeriod() {
         return retryPeriod;
     }
 
-    public void setRetryPeriod(int retryPeriod)
-    {
+    public void setRetryPeriod(int retryPeriod) {
         this.retryPeriod = retryPeriod;
     }
 
-    public boolean isCheckWhenStartup()
-    {
+    public boolean isCheckWhenStartup() {
         return checkWhenStartup;
     }
 
-    public void setCheckWhenStartup(boolean checkWhenStartup)
-    {
+    public void setCheckWhenStartup(boolean checkWhenStartup) {
         this.checkWhenStartup = checkWhenStartup;
     }
 }

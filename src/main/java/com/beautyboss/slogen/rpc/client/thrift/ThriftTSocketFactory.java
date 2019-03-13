@@ -14,8 +14,7 @@ import org.slf4j.LoggerFactory;
 public class ThriftTSocketFactory extends ConnFactory<TSocket> {
     private static final Logger logger = LoggerFactory.getLogger(ThriftTSocketFactory.class);
 
-    public TSocket makeObject(Server server) throws Exception
-    {
+    public TSocket makeObject(Server server) throws Exception {
         logger.debug("make object: " + server);
 
         TSocket socket = new TSocket(server.getHost(), server.getPort());
@@ -25,7 +24,7 @@ public class ThriftTSocketFactory extends ConnFactory<TSocket> {
         return socket;
     }
 
-    public void destroyObject(TSocket t) throws Exception  {
+    public void destroyObject(TSocket t) throws Exception {
         logger.debug("destroy object");
         if (t.isOpen()) {
             t.close();
@@ -36,15 +35,13 @@ public class ThriftTSocketFactory extends ConnFactory<TSocket> {
         return t.isOpen();
     }
 
-    public void activateObject(TSocket t) throws Exception
-    {
+    public void activateObject(TSocket t) throws Exception {
         if (!t.isOpen()) {
             throw new RpcException("socket closed");
         }
     }
 
-    public void passivateObject(TSocket t) throws Exception
-    {
+    public void passivateObject(TSocket t) throws Exception {
         if (!t.isOpen()) {
             throw new RpcException("socket closed");
         }

@@ -28,13 +28,11 @@ public abstract class AbstractZookeeperClient<TargetChildListener> implements Zo
         this.hosts = hosts;
     }
 
-    public String getHosts()
-    {
+    public String getHosts() {
         return hosts;
     }
 
-    public void create(String path, boolean ephemeral)
-    {
+    public void create(String path, boolean ephemeral) {
         int i = path.lastIndexOf('/');
         if (i > 0) {
             create(path.substring(0, i), false);
@@ -46,23 +44,19 @@ public abstract class AbstractZookeeperClient<TargetChildListener> implements Zo
         }
     }
 
-    public void addStateListener(StateListener listener)
-    {
+    public void addStateListener(StateListener listener) {
         stateListeners.add(listener);
     }
 
-    public void removeStateListener(StateListener listener)
-    {
+    public void removeStateListener(StateListener listener) {
         stateListeners.remove(listener);
     }
 
-    public Set<StateListener> getSessionListeners()
-    {
+    public Set<StateListener> getSessionListeners() {
         return stateListeners;
     }
 
-    public List<String> addChildListener(String path, final ChildListener listener)
-    {
+    public List<String> addChildListener(String path, final ChildListener listener) {
         ConcurrentMap<ChildListener, TargetChildListener> listeners = childListeners.get(path);
         if (listeners == null) {
             childListeners.putIfAbsent(path, new ConcurrentHashMap<ChildListener, TargetChildListener>());
@@ -76,8 +70,7 @@ public abstract class AbstractZookeeperClient<TargetChildListener> implements Zo
         return addTargetChildListener(path, targetListener);
     }
 
-    public void removeChildListener(String path, ChildListener listener)
-    {
+    public void removeChildListener(String path, ChildListener listener) {
         ConcurrentMap<ChildListener, TargetChildListener> listeners = childListeners.get(path);
         if (listeners != null) {
             TargetChildListener targetListener = listeners.remove(listener);
@@ -87,16 +80,14 @@ public abstract class AbstractZookeeperClient<TargetChildListener> implements Zo
         }
     }
 
-    protected void stateChanged(int state)
-    {
+    protected void stateChanged(int state) {
         logger.debug("state changed: " + state);
         for (StateListener sessionListener : getSessionListeners()) {
             sessionListener.stateChanged(state);
         }
     }
 
-    public void close()
-    {
+    public void close() {
         if (closed) {
             return;
         }

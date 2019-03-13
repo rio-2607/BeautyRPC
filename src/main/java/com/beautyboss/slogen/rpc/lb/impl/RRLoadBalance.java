@@ -15,8 +15,7 @@ public class RRLoadBalance implements LoadBalance {
     private AtomicInteger inc = new AtomicInteger(UUID.randomUUID().toString().hashCode());
 
     @Override
-    public Service select(List<Service> services)
-    {
+    public Service select(List<Service> services) {
         return services.get(Math.abs(inc.incrementAndGet()) % services.size());
     }
 }

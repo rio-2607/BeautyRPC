@@ -15,13 +15,15 @@ public @interface ThriftServer {
 
 
     /**
-     *  服务分组
+     * 服务分组
+     *
      * @return
      */
     String group() default "default";
 
     /**
      * 是否注册到zk上面去
+     *
      * @return
      */
     boolean register() default true;

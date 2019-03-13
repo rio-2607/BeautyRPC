@@ -51,42 +51,42 @@ public class ThriftService {
      * 创建服务容器，使用指定的thrift服务模型(threadpool或threadselector)
      * 当服务模型是threadselector时，transport工厂为TFramedTransport.Factory，否则为TTransportFacotry
      * 使用默认的协议工厂TBinaryProtocol.Factory
-     * @param serverType   服务模型
+     *
+     * @param serverType 服务模型
      */
-    public ThriftService(String serverType)
-    {
+    public ThriftService(String serverType) {
         this(new TTransportFactory(), new TBinaryProtocol.Factory(), serverType);
     }
 
     /**
      * 创建服务容器，使用指定的transport工厂和服务模型(threadpool或threadselector)
-     * @param transportFactory   默认为TTransportFactory, 当服务类型为threadselector时这个参数不起作用
-     * @param serverType 服务类型，默认为threadselector
+     *
+     * @param transportFactory 默认为TTransportFactory, 当服务类型为threadselector时这个参数不起作用
+     * @param serverType       服务类型，默认为threadselector
      */
-    public ThriftService(TTransportFactory transportFactory, String serverType)
-    {
+    public ThriftService(TTransportFactory transportFactory, String serverType) {
         this(transportFactory, new TBinaryProtocol.Factory(), serverType);
     }
 
     /**
      * 创建服务容器，使用指定的协议工厂和服务模型(threadpool或threadselector)
      * 当服务模型是threadselector时，transport工厂为TFramedTransport.Factory，否则为TTransportFacotry
-     * @param protocolFactory  默认为TBinaryProtocol.Factory
-     * @param serverType 服务类型，默认为threadselector
+     *
+     * @param protocolFactory 默认为TBinaryProtocol.Factory
+     * @param serverType      服务类型，默认为threadselector
      */
-    public ThriftService(TProtocolFactory protocolFactory, String serverType)
-    {
+    public ThriftService(TProtocolFactory protocolFactory, String serverType) {
         this(new TTransportFactory(), protocolFactory, serverType);
     }
 
     /**
      * 创建服务容器，使用指定的协议工厂、tranport工厂和thrift服务模型(threadpool或threadselector)
-     * @param transportFactory   默认为TTransportFactory, 当服务类型为threadselector时忽略这个参数
-     * @param protocolFactory   默认为TBinaryProtocol.Factory
-     * @param serverType 服务类型，默认为threadselector
+     *
+     * @param transportFactory 默认为TTransportFactory, 当服务类型为threadselector时忽略这个参数
+     * @param protocolFactory  默认为TBinaryProtocol.Factory
+     * @param serverType       服务类型，默认为threadselector
      */
-    public ThriftService(TTransportFactory transportFactory, TProtocolFactory protocolFactory, String serverType)
-    {
+    public ThriftService(TTransportFactory transportFactory, TProtocolFactory protocolFactory, String serverType) {
         this.transportFactory = transportFactory;
         this.protocolFactory = protocolFactory;
         this.serverType = serverType;
@@ -95,19 +95,19 @@ public class ThriftService {
 
     /**
      * 添加服务代理到服务容器
-     * @param service   服务代理
+     *
+     * @param service 服务代理
      */
-    public void add(ServiceProxy service)
-    {
+    public void add(ServiceProxy service) {
         services.add(service);
     }
 
     /**
      * 初始化服务容器并启动服务
-     * @throws  ServiceException if init failure
+     *
+     * @throws ServiceException if init failure
      */
-    public void init()
-    {
+    public void init() {
         if (!inited.compareAndSet(false, true)) {
             return;
         }
@@ -158,10 +158,9 @@ public class ThriftService {
         }
 
         if (registry != null) {
-            server.setServerEventHandler(new AbstractTServerEventHandler(){
+            server.setServerEventHandler(new AbstractTServerEventHandler() {
                 @Override
-                public void preServe()
-                {
+                public void preServe() {
                     if (config.rigistryDelay > 0) {
                         try {
                             Thread.sleep(config.rigistryDelay);
@@ -179,7 +178,7 @@ public class ThriftService {
             });
 
             //清理zk资源
-            Runtime.getRuntime().addShutdownHook(new Thread(){
+            Runtime.getRuntime().addShutdownHook(new Thread() {
                 public void run() {
                     RegistryContainer.destroyAll();
                 }
@@ -193,8 +192,7 @@ public class ThriftService {
         }
     }
 
-    public void stop()
-    {
+    public void stop() {
         if (!inited.get()) {
             logger.warn("service not start, so stop do nothing");
             return;
@@ -218,8 +216,7 @@ public class ThriftService {
         }
     }
 
-    private TServer initTThreadedSelectorServer() throws Exception
-    {
+    private TServer initTThreadedSelectorServer() throws Exception {
         TNonblockingServerSocket serverSocket = new TNonblockingServerSocket(config.port);
         TThreadedSelectorServer.Args args = new TThreadedSelectorServer.Args(serverSocket);
 
@@ -251,8 +248,7 @@ public class ThriftService {
         return new TThreadedSelectorServer(args);
     }
 
-    private TServer initThreadPoolServer() throws Exception
-    {
+    private TServer initThreadPoolServer() throws Exception {
         TThreadPoolServer.Args args = new TThreadPoolServer.Args(new TServerSocket(config.port));
 
         if (isMulti) {
@@ -285,66 +281,60 @@ public class ThriftService {
     private abstract class AbstractTServerEventHandler implements TServerEventHandler {
 
         @Override
-        public ServerContext createContext(TProtocol arg0, TProtocol arg1) {return null;}
+        public ServerContext createContext(TProtocol arg0, TProtocol arg1) {
+            return null;
+        }
 
         @Override
-        public void deleteContext(ServerContext arg0, TProtocol arg1, TProtocol arg2) {}
+        public void deleteContext(ServerContext arg0, TProtocol arg1, TProtocol arg2) {
+        }
 
         @Override
         public abstract void preServe();
 
         @Override
         public void processContext(ServerContext arg0, TTransport arg1,
-                                   TTransport arg2) {}
+                                   TTransport arg2) {
+        }
     }
 
-    public TTransportFactory getTransportFactory()
-    {
+    public TTransportFactory getTransportFactory() {
         return transportFactory;
     }
 
-    public void setTransportFactory(TTransportFactory transportFactory)
-    {
+    public void setTransportFactory(TTransportFactory transportFactory) {
         this.transportFactory = transportFactory;
     }
 
-    public TProtocolFactory getProtocolFactory()
-    {
+    public TProtocolFactory getProtocolFactory() {
         return protocolFactory;
     }
 
-    public void setProtocolFactory(TProtocolFactory protocolFactory)
-    {
+    public void setProtocolFactory(TProtocolFactory protocolFactory) {
         this.protocolFactory = protocolFactory;
     }
 
-    public String getServerType()
-    {
+    public String getServerType() {
         return serverType;
     }
 
-    public void setServerType(String serverType)
-    {
+    public void setServerType(String serverType) {
         this.serverType = serverType;
     }
 
-    public boolean isMulti()
-    {
+    public boolean isMulti() {
         return isMulti;
     }
 
-    public void setMulti(boolean isMulti)
-    {
+    public void setMulti(boolean isMulti) {
         this.isMulti = isMulti;
     }
 
-    public List<ServiceProxy> getServices()
-    {
+    public List<ServiceProxy> getServices() {
         return services;
     }
 
-    public void setServices(List<ServiceProxy> services)
-    {
+    public void setServices(List<ServiceProxy> services) {
         this.services = services;
     }
 

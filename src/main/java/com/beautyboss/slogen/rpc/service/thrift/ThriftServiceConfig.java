@@ -39,8 +39,7 @@ public class ThriftServiceConfig implements Cloneable {
     public int rigistryDelay;
     public RegistryConfig regcfg;
 
-    public synchronized static ThriftServiceConfig getConfig()
-    {
+    public synchronized static ThriftServiceConfig getConfig() {
         if (config != null) {
             return config;
         }

@@ -40,26 +40,27 @@ public class ServiceProxy implements MethodInterceptor {
     /**
      * 创建服务代理, 成员需要通过setter方法设置，并手动调用init方法
      */
-    public ServiceProxy() {}
+    public ServiceProxy() {
+    }
 
     /**
      * 创建服务代理并且注册服务，需要配置注册中心
-     * @param ifaceClass   接口类
-     * @param ifaceImpl   接口实现
+     *
+     * @param ifaceClass 接口类
+     * @param ifaceImpl  接口实现
      */
-    public ServiceProxy(Class<?> ifaceClass, Object ifaceImpl)
-    {
+    public ServiceProxy(Class<?> ifaceClass, Object ifaceImpl) {
         this(ifaceClass, ifaceImpl, true);
     }
 
     /**
      * 创建服务代理
-     * @param ifaceClass  接口名字，使用完整的类名
-     * @param ifaceImpl   接口实现
-     * @param register    是否注册
+     *
+     * @param ifaceClass 接口名字，使用完整的类名
+     * @param ifaceImpl  接口实现
+     * @param register   是否注册
      */
-    public ServiceProxy(Class<?> ifaceClass, Object ifaceImpl, boolean register)
-    {
+    public ServiceProxy(Class<?> ifaceClass, Object ifaceImpl, boolean register) {
         this.ifaceClass = ifaceClass;
         this.ifaceName = ifaceClass.getName();
         this.ifaceImpl = ifaceImpl;
@@ -69,8 +70,7 @@ public class ServiceProxy implements MethodInterceptor {
     /**
      * 初始化服务容器并启动服务
      */
-    void init()
-    {
+    void init() {
         if (!inited.compareAndSet(false, true)) {
             return;
         }
@@ -121,8 +121,7 @@ public class ServiceProxy implements MethodInterceptor {
         }
     }
 
-    Object getProxy()
-    {
+    Object getProxy() {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(ifaceImpl.getClass());
         enhancer.setCallback(this);
@@ -130,86 +129,75 @@ public class ServiceProxy implements MethodInterceptor {
         return enhancer.create();
     }
 
-    public Class<?> getIfaceClass()
-    {
+    public Class<?> getIfaceClass() {
         return ifaceClass;
     }
 
     /**
      * 设置接口名
-     * @param ifaceClass   接口类
+     *
+     * @param ifaceClass 接口类
      */
-    public void setIfaceClass(Class<?> ifaceClass)
-    {
+    public void setIfaceClass(Class<?> ifaceClass) {
         this.ifaceClass = ifaceClass;
         this.ifaceName = ifaceClass.getName();
     }
 
-    public Object getIfaceImpl()
-    {
+    public Object getIfaceImpl() {
         return ifaceImpl;
     }
 
     /**
      * 设置接口实现
+     *
      * @param ifaceImpl
      */
-    public void setIfaceImpl(Object ifaceImpl)
-    {
+    public void setIfaceImpl(Object ifaceImpl) {
         this.ifaceImpl = ifaceImpl;
     }
 
-    public boolean isRegister()
-    {
+    public boolean isRegister() {
         return register;
     }
 
     /**
      * 设置是否注册服务到注册中心
+     *
      * @param register 默认false
      */
-    public void setRegister(boolean register)
-    {
+    public void setRegister(boolean register) {
         this.register = register;
     }
 
-    public AtomicLong getRequestNum()
-    {
+    public AtomicLong getRequestNum() {
         return requestNum;
     }
 
-    public AtomicLong getRspSpend()
-    {
+    public AtomicLong getRspSpend() {
         return rspSpend;
     }
 
-    void setRspSpend(AtomicLong rspSpend)
-    {
+    void setRspSpend(AtomicLong rspSpend) {
         this.rspSpend = rspSpend;
     }
 
-    public Service getService()
-    {
+    public Service getService() {
         return service;
     }
 
-    public Constructor<TProcessor> getPconstructor()
-    {
+    public Constructor<TProcessor> getPconstructor() {
         return pconstructor;
     }
 
-    public String getIfaceName()
-    {
+    public String getIfaceName() {
         return ifaceName;
     }
 
-    public ClassLoader getClassLoader()
-    {
+    public ClassLoader getClassLoader() {
         return classLoader;
     }
 
-    public ServiceProxy setClassLoader(ClassLoader classLoader)
-    {
+    public ServiceProxy setClassLoader(ClassLoader classLoader) {
         this.classLoader = classLoader;
         return this;
     }

@@ -15,24 +15,20 @@ public class Server {
         this.port = port;
     }
 
-    public static Server valueOf(String key)
-    {
+    public static Server valueOf(String key) {
         String[] tmp = StringUtils.split(key, ':');
         return new Server(tmp[0], Integer.parseInt(tmp[1]));
     }
 
-    public String getHost()
-    {
+    public String getHost() {
         return host;
     }
 
-    public int getPort()
-    {
+    public int getPort() {
         return port;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return host + ":" + port;
     }
 }

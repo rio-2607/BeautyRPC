@@ -22,12 +22,14 @@ public @interface ThriftClient {
 
     /**
      * 是否从zk获取 默认是
+     *
      * @return
      */
     boolean register() default true;
 
     /**
      * 直连地址
+     *
      * @return
      */
     String upstreamAddrs() default "";

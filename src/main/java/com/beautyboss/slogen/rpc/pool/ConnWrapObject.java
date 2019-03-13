@@ -17,18 +17,15 @@ public class ConnWrapObject<T> {
         this.object = object;
     }
 
-    public T getObject()
-    {
+    public T getObject() {
         return object;
     }
 
-    public long getCreateTime()
-    {
+    public long getCreateTime() {
         return createTime;
     }
 
-    public long getActiveTimeMillis()
-    {
+    public long getActiveTimeMillis() {
         // Take copies to avoid threading issues
         long rTime = lastReturnTime;
         long bTime = lastBorrowTime;
@@ -40,8 +37,7 @@ public class ConnWrapObject<T> {
         }
     }
 
-    public long getIdleTimeMillis()
-    {
+    public long getIdleTimeMillis() {
         final long elapsed = System.currentTimeMillis() - lastReturnTime;
         // elapsed may be negative if:
         // - another thread updates lastReturnTime during the calculation window
@@ -50,23 +46,19 @@ public class ConnWrapObject<T> {
         return elapsed >= 0 ? elapsed : 0;
     }
 
-    public long getLastBorrowTime()
-    {
+    public long getLastBorrowTime() {
         return lastBorrowTime;
     }
 
-    public long getLastReturnTime()
-    {
+    public long getLastReturnTime() {
         return lastReturnTime;
     }
 
-    public long getBorrowedCount()
-    {
+    public long getBorrowedCount() {
         return borrowedCount;
     }
 
-    public long getLastUsedTime()
-    {
+    public long getLastUsedTime() {
         return lastUseTime;
     }
 
@@ -74,8 +66,7 @@ public class ConnWrapObject<T> {
         IDLE, ALLOCATED
     }
 
-    public synchronized boolean allocate()
-    {
+    public synchronized boolean allocate() {
         if (state == ObjectState.IDLE) {
             state = ObjectState.ALLOCATED;
             lastBorrowTime = System.currentTimeMillis();
@@ -87,8 +78,7 @@ public class ConnWrapObject<T> {
         return false;
     }
 
-    public synchronized boolean deallocate()
-    {
+    public synchronized boolean deallocate() {
         if (state == ObjectState.ALLOCATED) {
             state = ObjectState.IDLE;
             lastReturnTime = System.currentTimeMillis();
@@ -98,13 +88,11 @@ public class ConnWrapObject<T> {
         return false;
     }
 
-    public ObjectState getState()
-    {
+    public ObjectState getState() {
         return state;
     }
 
-    public void setState(ObjectState state)
-    {
+    public void setState(ObjectState state) {
         this.state = state;
     }
 }

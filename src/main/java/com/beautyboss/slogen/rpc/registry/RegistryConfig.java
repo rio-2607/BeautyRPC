@@ -19,10 +19,10 @@ public class RegistryConfig {
     public boolean checkWhenStartup;
     public String zkclient;
 
-    public RegistryConfig() {}
+    public RegistryConfig() {
+    }
 
-    public RegistryConfig(PropertiesConfiguration prop)
-    {
+    public RegistryConfig(PropertiesConfiguration prop) {
         String[] hosts = prop.getStringArray(Constants.CONFIG_REGISTRY_ADDRS);
         Arrays.sort(hosts);
         addrs = StringUtils.join(hosts, ',');
@@ -42,7 +42,7 @@ public class RegistryConfig {
             throw new IllegalArgumentException("retryPeriod must > 0");
         }
 
-        checkWhenStartup = prop.getBoolean( Constants.CONFIG_REGISTRY_CHECK_WHEN_STARTUP, Constants.DEFAULT_CHECK_WHEN_STARTUP);
+        checkWhenStartup = prop.getBoolean(Constants.CONFIG_REGISTRY_CHECK_WHEN_STARTUP, Constants.DEFAULT_CHECK_WHEN_STARTUP);
 
         zkclient = prop.getString(Constants.CONFIG_REGISTRY_ZKCLIENT, ZookeeperClient.ZK_CURATOR_CLIENT);
         if (!ZookeeperClient.ZK_CURATOR_CLIENT.equals(zkclient)
@@ -51,13 +51,11 @@ public class RegistryConfig {
         }
     }
 
-    public String getKey()
-    {
+    public String getKey() {
         return addrs;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return addrs;
     }
 }

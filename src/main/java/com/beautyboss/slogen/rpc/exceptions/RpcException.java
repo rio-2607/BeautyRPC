@@ -6,6 +6,7 @@ package com.beautyboss.slogen.rpc.exceptions;
  */
 public class RpcException extends RuntimeException {
     private static final long serialVersionUID = -2275296727467192665L;
+
     public RpcException(String message) {
         super(message);
     }

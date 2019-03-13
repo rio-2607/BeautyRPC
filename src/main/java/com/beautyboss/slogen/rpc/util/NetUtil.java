@@ -24,13 +24,13 @@ public class NetUtil {
 
     private static final int MAX_PORT = 65535;
 
-    public static boolean isInvalidPort(int port){
+    public static boolean isInvalidPort(int port) {
         return port > MIN_PORT || port <= MAX_PORT;
     }
 
     private static final Pattern ADDRESS_PATTERN = Pattern.compile("^\\d{1,3}(\\.\\d{1,3}){3}\\:\\d{1,5}$");
 
-    public static boolean isValidAddress(String address){
+    public static boolean isValidAddress(String address) {
         return ADDRESS_PATTERN.matcher(address).matches();
     }
 
@@ -55,7 +55,7 @@ public class NetUtil {
     }
 
     public static boolean isValidLocalHost(String host) {
-        return ! isInvalidLocalHost(host);
+        return !isInvalidLocalHost(host);
     }
 
     public static InetSocketAddress getLocalSocketAddress(String host, int port) {
@@ -71,12 +71,12 @@ public class NetUtil {
 
         String name = address.getHostAddress();
         return (name != null
-                && ! ANYHOST.equals(name)
-                && ! LOCALHOST.equals(name)
+                && !ANYHOST.equals(name)
+                && !LOCALHOST.equals(name)
                 && IP_PATTERN.matcher(name).matches());
     }
 
-    public static String getLocalHost(){
+    public static String getLocalHost() {
         InetAddress address = getLocalAddress();
         return address == null ? LOCALHOST : address.getHostAddress();
     }

@@ -25,18 +25,15 @@ public abstract class AbstractRegistry implements Registry {
     /* init by user */
     protected String hosts;
 
-    public Set<Service> getRegistered()
-    {
+    public Set<Service> getRegistered() {
         return registered;
     }
 
-    public Map<String, Set<NotifyListener>> getSubscribed()
-    {
+    public Map<String, Set<NotifyListener>> getSubscribed() {
         return subscribed;
     }
 
-    public void register(Service service)
-    {
+    public void register(Service service) {
         if (service == null) {
             throw new IllegalArgumentException("register service == null");
         }
@@ -45,8 +42,7 @@ public abstract class AbstractRegistry implements Registry {
         registered.add(service);
     }
 
-    public void unregister(Service service)
-    {
+    public void unregister(Service service) {
         if (service == null) {
             throw new IllegalArgumentException("unregister service == null");
         }
@@ -54,8 +50,7 @@ public abstract class AbstractRegistry implements Registry {
         registered.remove(service);
     }
 
-    public void subscribe(String service, NotifyListener listener)
-    {
+    public void subscribe(String service, NotifyListener listener) {
         if (service == null) {
             throw new IllegalArgumentException("subscribe service == null");
         }
@@ -71,8 +66,7 @@ public abstract class AbstractRegistry implements Registry {
         listeners.add(listener);
     }
 
-    public void unsubscribe(String service, NotifyListener listener)
-    {
+    public void unsubscribe(String service, NotifyListener listener) {
         if (service == null) {
             throw new IllegalArgumentException("unsubscribe service == null");
         }
@@ -86,8 +80,7 @@ public abstract class AbstractRegistry implements Registry {
         }
     }
 
-    protected void recover() throws Exception
-    {
+    protected void recover() throws Exception {
         // register
         Set<Service> recoverRegistered = new HashSet<>(getRegistered());
         if (!recoverRegistered.isEmpty()) {
@@ -109,8 +102,7 @@ public abstract class AbstractRegistry implements Registry {
         }
     }
 
-    protected void notify(List<Service> services)
-    {
+    protected void notify(List<Service> services) {
         if (services == null || services.isEmpty()) return;
 
         for (Map.Entry<String, Set<NotifyListener>> entry : getSubscribed().entrySet()) {
@@ -131,8 +123,7 @@ public abstract class AbstractRegistry implements Registry {
         }
     }
 
-    protected void notify(String service, NotifyListener listener, List<Service> services)
-    {
+    protected void notify(String service, NotifyListener listener, List<Service> services) {
         if (service == null) {
             throw new IllegalArgumentException("notify service == null");
         }
@@ -150,8 +141,7 @@ public abstract class AbstractRegistry implements Registry {
         listener.notify(services);
     }
 
-    public void destroy()
-    {
+    public void destroy() {
         if (logger.isInfoEnabled()) {
             logger.info("Destroy registry");
         }
@@ -189,13 +179,11 @@ public abstract class AbstractRegistry implements Registry {
         }
     }
 
-    public String getHosts()
-    {
+    public String getHosts() {
         return hosts;
     }
 
-    public void setHosts(String hosts)
-    {
+    public void setHosts(String hosts) {
         this.hosts = hosts;
     }
 }

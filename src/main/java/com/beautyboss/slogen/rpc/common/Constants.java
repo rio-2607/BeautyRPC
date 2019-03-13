@@ -6,14 +6,14 @@ package com.beautyboss.slogen.rpc.common;
  */
 public class Constants {
 
-    public static final String  DEFAULT_CONFIG_PROPERTIES  = "thrift-rpc.properties";
+    public static final String DEFAULT_CONFIG_PROPERTIES = "thrift-rpc.properties";
     public static final String CONFIG_PROPERTIES = "application.properties";
     public static final String SPRINGBOOT_ENV = "spring.profiles.active";
     public static final String SPRINGBOOT_ENV_PROPERTIES = "application-%s.properties";
 
 
     /* thrift client default config */
-    public static final int DEFAULT_RETRIES  = 2;
+    public static final int DEFAULT_RETRIES = 2;
     public static final int DEFAULT_CLIENT_TIMEOUT = 5000;
     public static final boolean DEFAULT_NOKEEPALIVE = false;
     public static final boolean DEFAULT_ISMULTI_PROTOCOL = true;
@@ -22,7 +22,7 @@ public class Constants {
     public static final int DEFAULT_HEARTBEAT_PERIOD = 5000;
 
     /* thrift connection pool default config */
-    public static final int DEFAULT_MAX_IDLE  = 8;
+    public static final int DEFAULT_MAX_IDLE = 8;
     public static final boolean DEFAULT_TEST_ON_CREATE = false;
     public static final boolean DEFAULT_TEST_ON_BORROW = false;
     public static final boolean DEFAULT_TEST_ON_RETURN = false;

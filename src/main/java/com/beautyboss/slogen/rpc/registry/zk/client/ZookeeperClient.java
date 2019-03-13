@@ -7,8 +7,8 @@ import java.util.List;
  * Date   : 2019/1/26
  */
 public interface ZookeeperClient {
-    public static final String ZK_CURATOR_CLIENT = "curator";
-    public static final String ZK_ZKCLIENT_CLIENT = "zkclient";
+    String ZK_CURATOR_CLIENT = "curator";
+    String ZK_ZKCLIENT_CLIENT = "zkclient";
 
     void create(String path, boolean ephemeral);
 

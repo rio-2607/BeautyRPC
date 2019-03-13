@@ -42,13 +42,11 @@ public class ConnPool<T> {
         _pool = new ConcurrentLinkedQueue<>();
     }
 
-    private ConnWrapObject<T> wrap(T obj)
-    {
+    private ConnWrapObject<T> wrap(T obj) {
         return new ConnWrapObject<>(obj);
     }
 
-    public ConnWrapObject<T> borrowObject() throws Exception
-    {
+    public ConnWrapObject<T> borrowObject() throws Exception {
         assertOpen();
 
         ConnWrapObject<T> p = null;
@@ -120,8 +118,7 @@ public class ConnPool<T> {
         return p;
     }
 
-    public void returnObject(ConnWrapObject<T> obj) throws Exception
-    {
+    public void returnObject(ConnWrapObject<T> obj) throws Exception {
         try {
             addObjectToPool(obj, true);
         } catch (Exception e) {
@@ -136,15 +133,13 @@ public class ConnPool<T> {
         }
     }
 
-    public void invalidateObject(ConnWrapObject<T> obj) throws Exception
-    {
+    public void invalidateObject(ConnWrapObject<T> obj) throws Exception {
         if (_factory != null) {
             _factory.destroyObject(obj.getObject());
         }
     }
 
-    public synchronized void clear()
-    {
+    public synchronized void clear() {
         List<ConnWrapObject<T>> toDestroy = new ArrayList<>(_pool);
 
         _pool.clear();
@@ -154,8 +149,7 @@ public class ConnPool<T> {
         }
     }
 
-    private void destroy(ConnWrapObject<T> p)
-    {
+    private void destroy(ConnWrapObject<T> p) {
         try {
             _factory.destroyObject(p.getObject());
         } catch (Exception e) {
@@ -165,8 +159,7 @@ public class ConnPool<T> {
     }
 
     private void addObjectToPool(ConnWrapObject<T> t, boolean decrementNumActive)
-            throws Exception
-    {
+            throws Exception {
         T obj = t.getObject();
         boolean success = true;
         if (isTestOnReturn() && !(_factory.validateObject(obj))) {
@@ -204,8 +197,7 @@ public class ConnPool<T> {
         }
     }
 
-    public synchronized void close()
-    {
+    public synchronized void close() {
         if (isClosed()) {
             return;
         }
@@ -214,8 +206,7 @@ public class ConnPool<T> {
         clear();
     }
 
-    public void addObject() throws Exception
-    {
+    public void addObject() throws Exception {
         assertOpen();
         if (_factory == null) {
             throw new IllegalStateException(
@@ -236,45 +227,37 @@ public class ConnPool<T> {
         }
     }
 
-    private boolean isClosed()
-    {
+    private boolean isClosed() {
         return closed;
     }
 
-    private void assertOpen() throws IllegalStateException
-    {
+    private void assertOpen() throws IllegalStateException {
         if (isClosed()) {
             throw new IllegalStateException("Pool not open");
         }
     }
 
-    public int getNumIdle()
-    {
+    public int getNumIdle() {
         return _pool.size();
     }
 
-    public Server getRpcServer()
-    {
+    public Server getRpcServer() {
         return _server;
     }
 
-    public int getMaxIdle()
-    {
+    public int getMaxIdle() {
         return _config.maxIdle;
     }
 
-    public boolean isTestOnCreate()
-    {
+    public boolean isTestOnCreate() {
         return _config.testOnCreate;
     }
 
-    public boolean isTestOnBorrow()
-    {
+    public boolean isTestOnBorrow() {
         return _config.testOnBorrow;
     }
 
-    public boolean isTestOnReturn()
-    {
+    public boolean isTestOnReturn() {
         return _config.testOnReturn;
     }
 }

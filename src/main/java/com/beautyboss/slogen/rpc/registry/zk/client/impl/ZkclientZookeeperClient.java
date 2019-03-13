@@ -37,6 +37,7 @@ public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildLis
                     stateChanged(StateListener.CONNECTED);
                 }
             }
+
             public void handleNewSession() throws Exception {
                 stateChanged(StateListener.RECONNECTED);
             }
@@ -44,14 +45,12 @@ public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildLis
     }
 
     @Override
-    public Object readData(String path, boolean ifReturnNull)
-    {
+    public Object readData(String path, boolean ifReturnNull) {
         return client.readData(path, ifReturnNull);
     }
 
     @Override
-    public void writeData(String path, Object data)
-    {
+    public void writeData(String path, Object data) {
         client.writeData(path, data);
     }
 
@@ -109,6 +108,6 @@ public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildLis
     }
 
     public void removeTargetChildListener(String path, IZkChildListener listener) {
-        client.unsubscribeChildChanges(path,  listener);
+        client.unsubscribeChildChanges(path, listener);
     }
 }

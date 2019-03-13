@@ -67,7 +67,6 @@ public class ClientProxy implements MethodInterceptor {
     private boolean noKeepalive = false;
 
     /**
-     *
      * @param ifaceClass 接口类
      */
     public ClientProxy(Class<?> ifaceClass) {
@@ -75,9 +74,8 @@ public class ClientProxy implements MethodInterceptor {
     }
 
     /**
-     *
      * @param ifaceClass 接口类
-     * @param isMulti 服务端是否支持multi processor
+     * @param isMulti    服务端是否支持multi processor
      */
     public ClientProxy(Class<?> ifaceClass, boolean isMulti) {
         this.isMulti = isMulti;
@@ -124,7 +122,7 @@ public class ClientProxy implements MethodInterceptor {
             objectClass = classLoader.loadClass(ifaceName + "$Client");
             @SuppressWarnings("unchecked")
             Class<TServiceClientFactory<TServiceClient>> fi =
-                    (Class<TServiceClientFactory<TServiceClient>>)classLoader.loadClass(ifaceName + "$Client$Factory");
+                    (Class<TServiceClientFactory<TServiceClient>>) classLoader.loadClass(ifaceName + "$Client$Factory");
             clientFactory = fi.newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             if (staticRegistry != null) {
@@ -147,8 +145,7 @@ public class ClientProxy implements MethodInterceptor {
 
         listener = new NotifyListener() {
             @Override
-            public void notify(List<Service> news)
-            {
+            public void notify(List<Service> news) {
                 List<Service> olds = servicesRef.get();
 
                 logger.info("receive service update notify, old:{}, new:{}", JsonUtil.toJson(olds), JsonUtil.toJson(news));
@@ -240,7 +237,7 @@ public class ClientProxy implements MethodInterceptor {
             boolean broken = false;
             boolean clear = false;
             try {
-                if (this.noKeepalive ) {
+                if (this.noKeepalive) {
                     socket = new TSocket(service.host, service.port);
                     socket.open();
                 } else {
@@ -279,7 +276,7 @@ public class ClientProxy implements MethodInterceptor {
                     return null;
                 } else {
                     result = 1;
-                    logger.error("invoke " + service.toString() + " ["  + method.getName() + "] got exception: "
+                    logger.error("invoke " + service.toString() + " [" + method.getName() + "] got exception: "
                             + ExceptionMsg.TAPP[e.getType()] + "," + e.getMessage(), e);
                     throw e;
                 }
@@ -290,13 +287,13 @@ public class ClientProxy implements MethodInterceptor {
                 throw e;
             } catch (TException e) {
                 result = 1;
-                logger.error("invoke " + service.toString() + " ["  + method.getName() + "] failure: "
+                logger.error("invoke " + service.toString() + " [" + method.getName() + "] failure: "
                         + e.getMessage(), e);
                 throw e;
             } catch (Throwable e) {
                 broken = true;
                 result = 1;
-                logger.error("invoke " + service.toString() + " ["  + method.getName() + "] failure,unknown exception: "
+                logger.error("invoke " + service.toString() + " [" + method.getName() + "] failure,unknown exception: "
                         + e.getMessage(), e);
                 throw e;
             } finally {
@@ -328,168 +325,148 @@ public class ClientProxy implements MethodInterceptor {
         }
     }
 
-    public Class<?> getIfaceClass()
-    {
+    public Class<?> getIfaceClass() {
         return ifaceClass;
     }
 
-    public boolean isMulti()
-    {
+    public boolean isMulti() {
         return isMulti;
     }
 
     /**
-     *
      * @param isMulti 设置服务端是否是TMulitProcessor
      */
-    public ClientProxy setMulti(boolean isMulti)
-    {
+    public ClientProxy setMulti(boolean isMulti) {
         this.isMulti = isMulti;
         return this;
     }
 
     /**
      * 设置接口类
+     *
      * @param ifaceClass
      */
-    public ClientProxy setIfaceClass(Class<?> ifaceClass)
-    {
+    public ClientProxy setIfaceClass(Class<?> ifaceClass) {
         this.ifaceClass = ifaceClass;
         this.ifaceName = ifaceClass.getName();
         return this;
     }
 
-    public TTransportFactory getTransportFactory()
-    {
+    public TTransportFactory getTransportFactory() {
         return transportFactory;
     }
 
     /**
      * 设置thrift transport工厂，默认是TTransportFactory，如果服务是非阻塞模型
      * 则需要设置为TFramedTransport
-     * @param transportFactory   transport工厂
+     *
+     * @param transportFactory transport工厂
      */
-    public ClientProxy setTransportFactory(TTransportFactory transportFactory)
-    {
+    public ClientProxy setTransportFactory(TTransportFactory transportFactory) {
         this.transportFactory = transportFactory;
         return this;
     }
 
-    public TProtocolFactory getProtocolFactory()
-    {
+    public TProtocolFactory getProtocolFactory() {
         return protocolFactory;
     }
 
     /**
      * 设置thrift 协议工厂，默认是TBinaryProtocol，要和服务端保持一致
-     * @param protocolFactory   协议工厂
+     *
+     * @param protocolFactory 协议工厂
      */
-    public ClientProxy setProtocolFactory(TProtocolFactory protocolFactory)
-    {
+    public ClientProxy setProtocolFactory(TProtocolFactory protocolFactory) {
         this.protocolFactory = protocolFactory;
         return this;
     }
 
-    public String getUpstreamAddrs()
-    {
+    public String getUpstreamAddrs() {
         return upstreamAddrs;
     }
 
     /**
      * 设置服务地址，多个地址逗号分隔，如果不需要注册中心则需要这个配置
-     * @param upstreamAddrs   服务地址
+     *
+     * @param upstreamAddrs 服务地址
      */
-    public ClientProxy setUpstreamAddrs(String upstreamAddrs)
-    {
+    public ClientProxy setUpstreamAddrs(String upstreamAddrs) {
         this.upstreamAddrs = upstreamAddrs;
         return this;
     }
 
-    public String getLbType()
-    {
+    public String getLbType() {
         return lbType;
     }
 
     /**
      * 设置负载均衡类型，目前支持roundrobin，默认为roundrobin
-     * @param lbType   roundrobin
+     *
+     * @param lbType roundrobin
      */
-    public ClientProxy setLbType(String lbType)
-    {
+    public ClientProxy setLbType(String lbType) {
         this.lbType = lbType;
         return this;
     }
 
-    public boolean isRegister()
-    {
+    public boolean isRegister() {
         return register;
     }
 
     /**
      * 设置是否需要注册中心，默认不需要
-     * @param register   默认false
+     *
+     * @param register 默认false
      */
-    public ClientProxy setRegister(boolean register)
-    {
+    public ClientProxy setRegister(boolean register) {
         this.register = register;
         return this;
     }
 
-    public int getRetries()
-    {
+    public int getRetries() {
         return retries;
     }
 
-    public ClientProxy setRetries(int retries)
-    {
+    public ClientProxy setRetries(int retries) {
         this.retries = retries;
         return this;
     }
 
-    public int getSocketTimeout()
-    {
+    public int getSocketTimeout() {
         return socketTimeout;
     }
 
-    public ClientProxy setSocketTimeout(int socketTimeout)
-    {
+    public ClientProxy setSocketTimeout(int socketTimeout) {
         this.socketTimeout = socketTimeout;
         return this;
     }
 
-    public ClassLoader getClassLoader()
-    {
+    public ClassLoader getClassLoader() {
         return classLoader;
     }
 
-    public ClientProxy setClassLoader(ClassLoader classLoader)
-    {
+    public ClientProxy setClassLoader(ClassLoader classLoader) {
         this.classLoader = classLoader;
         return this;
     }
 
-    public Service getService()
-    {
+    public Service getService() {
         return service;
     }
 
-    public NotifyListener getListener()
-    {
+    public NotifyListener getListener() {
         return listener;
     }
 
-    public String getIfaceName()
-    {
+    public String getIfaceName() {
         return ifaceName;
     }
 
-    public boolean isNoKeepalive()
-    {
+    public boolean isNoKeepalive() {
         return noKeepalive;
     }
 
-    public ClientProxy setNoKeepalive(boolean noKeepalive)
-    {
+    public ClientProxy setNoKeepalive(boolean noKeepalive) {
         this.noKeepalive = noKeepalive;
         return this;
     }

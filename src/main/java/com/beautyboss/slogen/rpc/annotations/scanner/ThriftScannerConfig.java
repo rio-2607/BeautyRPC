@@ -65,7 +65,7 @@ public class ThriftScannerConfig implements BeanDefinitionRegistryPostProcessor,
     }
 
 	/*public void setAnnotationClazz(String annotationClazz) {
-		if(!StringUtils.isEmpty(annotationClazz)){
+        if(!StringUtils.isEmpty(annotationClazz)){
 			StringBuffer sb = new StringBuffer(this.annotationClazz);
 			sb.append(",").append(annotationClazz);
 			this.annotationClazz = sb.toString();

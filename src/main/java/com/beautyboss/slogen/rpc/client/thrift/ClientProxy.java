@@ -70,8 +70,7 @@ public class ClientProxy implements MethodInterceptor {
      *
      * @param ifaceClass 接口类
      */
-    public ClientProxy(Class<?> ifaceClass)
-    {
+    public ClientProxy(Class<?> ifaceClass) {
         this(ifaceClass, true);
     }
 
@@ -80,8 +79,7 @@ public class ClientProxy implements MethodInterceptor {
      * @param ifaceClass 接口类
      * @param isMulti 服务端是否支持multi processor
      */
-    public ClientProxy(Class<?> ifaceClass, boolean isMulti)
-    {
+    public ClientProxy(Class<?> ifaceClass, boolean isMulti) {
         this.isMulti = isMulti;
         this.ifaceClass = ifaceClass;
         this.ifaceName = ifaceClass.getName();
@@ -90,8 +88,7 @@ public class ClientProxy implements MethodInterceptor {
     /**
      * 初始化客户端
      */
-    void init(ThriftClientConfig config)
-    {
+    void init(ThriftClientConfig config) {
         if (ifaceClass == null) {
             throw new IllegalArgumentException("ifaceClass == null");
         }
@@ -179,8 +176,7 @@ public class ClientProxy implements MethodInterceptor {
     /**
      * 关闭客户端
      */
-    void stop()
-    {
+    void stop() {
         if (staticRegistry != null) {
             staticRegistry.unsubscribe(ifaceName, listener);
             staticRegistry.destroy();
@@ -193,8 +189,7 @@ public class ClientProxy implements MethodInterceptor {
     /**
      * 获取客户端实例
      */
-    TServiceClient getClient()
-    {
+    TServiceClient getClient() {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(objectClass);
         enhancer.setCallback(this);

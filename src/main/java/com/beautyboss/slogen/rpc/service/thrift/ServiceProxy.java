@@ -32,9 +32,9 @@ public class ServiceProxy implements MethodInterceptor {
     private Constructor<TProcessor> pconstructor;
 
     /* init by user */
-    private Class<?> ifaceClass;
+    private Class<?> ifaceClass; // 定义的接口
     private ClassLoader classLoader;
-    private Object ifaceImpl;
+    private Object ifaceImpl; // 接口实现，实现了ifaceClass$Iface
     private boolean register; //默认不注册
 
     /**

@@ -25,12 +25,11 @@ public class ThriftTSocketPool implements AutoCloseable {
         this.config = config;
     }
 
-    public ConnWrapObject<TSocket> getResource(String key) throws Exception
-    {
+    public ConnWrapObject<TSocket> getResource(String key) throws Exception {
         ConnPool<TSocket> pool = lives.get(key);
 
         if (pool == null) {
-            lives.putIfAbsent(key, new ConnPool<TSocket>(
+            lives.putIfAbsent(key, new ConnPool<>(
                     new ThriftTSocketFactory(), Server.valueOf(key), config));
             pool = lives.get(key);
         }
@@ -38,8 +37,7 @@ public class ThriftTSocketPool implements AutoCloseable {
         return pool.borrowObject();
     }
 
-    public void returnResource(String key, ConnWrapObject<TSocket> resource)
-    {
+    public void returnResource(String key, ConnWrapObject<TSocket> resource) {
         TSocket obj = resource.getObject();
         if (!obj.isOpen()) {
             return;
@@ -55,8 +53,7 @@ public class ThriftTSocketPool implements AutoCloseable {
         }
     }
 
-    public void returnBrokenResource(String key, ConnWrapObject<TSocket> resource)
-    {
+    public void returnBrokenResource(String key, ConnWrapObject<TSocket> resource) {
         try {
             ConnPool<TSocket> pool = lives.get(key);
             if (pool != null) {
@@ -68,23 +65,20 @@ public class ThriftTSocketPool implements AutoCloseable {
     }
 
     @Override
-    public synchronized void close()
-    {
+    public synchronized void close() {
         for (Map.Entry<String, ConnPool<TSocket>> entry : lives.entrySet()) {
             entry.getValue().close();
         }
     }
 
-    public void clear(String key)
-    {
+    public void clear(String key) {
         ConnPool<TSocket> pool = lives.get(key);
         if (pool != null) {
             pool.clear();
         }
     }
 
-    public Map<String, ConnPool<TSocket>> getLives()
-    {
+    public Map<String, ConnPool<TSocket>> getLives() {
         return lives;
     }
 }

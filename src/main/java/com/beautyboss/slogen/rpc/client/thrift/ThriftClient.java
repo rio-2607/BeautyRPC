@@ -145,7 +145,7 @@ public class ThriftClient {
      */
     public TServiceClient getClient(Class<?> ifaceClass)
     {
-        if (inited.get() == false) {
+        if (!inited.get()) {
             throw new IllegalStateException("ThriftClient not inited");
         }
 

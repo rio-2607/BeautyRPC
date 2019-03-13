@@ -39,12 +39,12 @@ public class ConnPool<T> {
         _factory = factory;
         _config = config;
 
-        _pool = new ConcurrentLinkedQueue<ConnWrapObject<T>>();
+        _pool = new ConcurrentLinkedQueue<>();
     }
 
     private ConnWrapObject<T> wrap(T obj)
     {
-        return new ConnWrapObject<T>(obj);
+        return new ConnWrapObject<>(obj);
     }
 
     public ConnWrapObject<T> borrowObject() throws Exception
@@ -145,8 +145,7 @@ public class ConnPool<T> {
 
     public synchronized void clear()
     {
-        List<ConnWrapObject<T>> toDestroy = new ArrayList<ConnWrapObject<T>>(
-                _pool);
+        List<ConnWrapObject<T>> toDestroy = new ArrayList<>(_pool);
 
         _pool.clear();
 

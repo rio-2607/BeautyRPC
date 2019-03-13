@@ -30,13 +30,11 @@ public class ThriftClientConfig implements Cloneable {
     /* static service addrs */
     public int heartbeatPeriod;
 
-    public ThriftClientConfig()
-    {
+    public ThriftClientConfig() {
         this(Constants.DEFAULT_CONFIG_PROPERTIES);
     }
 
-    public ThriftClientConfig(InputStream inputStream)
-    {
+    public ThriftClientConfig(InputStream inputStream) {
 
         PropertiesConfiguration prop = new PropertiesConfiguration();
 
@@ -50,8 +48,7 @@ public class ThriftClientConfig implements Cloneable {
         initConfig(prop);
     }
 
-    public ThriftClientConfig(String configFile)
-    {
+    public ThriftClientConfig(String configFile) {
         PropertiesConfiguration prop;
 
         try {
@@ -64,8 +61,7 @@ public class ThriftClientConfig implements Cloneable {
         initConfig(prop);
     }
 
-    public void initConfig(PropertiesConfiguration prop)
-    {
+    public void initConfig(PropertiesConfiguration prop) {
         poolConfig = new ConnPoolConfig(prop);
         regcfg = new RegistryConfig(prop);
 

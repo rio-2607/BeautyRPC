@@ -126,16 +126,14 @@ public class ZookeeperRegistry extends FailbackRegistry {
             String path = toSubscribePath(service);
             ConcurrentMap<NotifyListener, ChildListener> listeners = zkListeners.get(service);
             if (listeners == null) {
-                zkListeners.putIfAbsent(service, new ConcurrentHashMap<NotifyListener, ChildListener>());
+                zkListeners.putIfAbsent(service, new ConcurrentHashMap<>());
                 listeners = zkListeners.get(service);
             }
             ChildListener zkListener = listeners.get(listener);
             if (zkListener == null) {
-                listeners.putIfAbsent(listener, new ChildListener() {
-                    public void childChanged(String parentPath, List<String> currentChilds) {
-                        logger.debug("path is updated: " + parentPath + "," + currentChilds);
-                        ZookeeperRegistry.this.notify(service, listener, toUrlsWithoutEmpty(service, currentChilds));
-                    }
+                listeners.putIfAbsent(listener, (parentPath, currentChilds) -> {
+                    logger.debug("path is updated: " + parentPath + "," + currentChilds);
+                    ZookeeperRegistry.this.notify(service, listener, toUrlsWithoutEmpty(service, currentChilds));
                 });
                 zkListener = listeners.get(listener);
             }

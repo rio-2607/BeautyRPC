@@ -60,7 +60,7 @@ public abstract class AbstractRegistry implements Registry {
         logger.info("Subscribe: " + service);
         Set<NotifyListener> listeners = subscribed.get(service);
         if (listeners == null) {
-            subscribed.putIfAbsent(service, new ConcurrentHashSet<NotifyListener>());
+            subscribed.putIfAbsent(service, new ConcurrentHashSet<>());
             listeners = subscribed.get(service);
         }
         listeners.add(listener);
@@ -146,37 +146,62 @@ public abstract class AbstractRegistry implements Registry {
             logger.info("Destroy registry");
         }
         Set<Service> destroyRegistered = new HashSet<>(getRegistered());
-        if (!destroyRegistered.isEmpty()) {
-            for (Service service : new HashSet<>(getRegistered())) {
+        destroyRegistered.forEach(service -> {
+            try {
+                unregister(service);
+                if (logger.isInfoEnabled()) {
+                    logger.info("Destroy unregister service " + service);
+                }
+            } catch (Throwable t) {
+                logger.warn("Failed to unregister service " + service + " to registry " + getHosts()
+                        + " on destroy, cause: " + t.getMessage(), t);
+            }
+        });
+//        if (!destroyRegistered.isEmpty()) {
+//            for (Service service : new HashSet<>(getRegistered())) {
+//                try {
+//                    unregister(service);
+//                    if (logger.isInfoEnabled()) {
+//                        logger.info("Destroy unregister service " + service);
+//                    }
+//                } catch (Throwable t) {
+//                    logger.warn("Failed to unregister service " + service + " to registry " + getHosts()
+//                            + " on destroy, cause: " + t.getMessage(), t);
+//                }
+//
+//            }
+//        }
+        Map<String, Set<NotifyListener>> destroySubscribed = new HashMap<>(getSubscribed());
+        destroySubscribed.forEach((service,listeners) -> {
+            listeners.forEach(listener -> {
                 try {
-                    unregister(service);
+                    unsubscribe(service, listener);
                     if (logger.isInfoEnabled()) {
-                        logger.info("Destroy unregister service " + service);
+                        logger.info("Destroy unsubscribe service " + service);
                     }
                 } catch (Throwable t) {
-                    logger.warn("Failed to unregister service " + service + " to registry " + getHosts()
+                    logger.warn("Failed to unsubscribe service " + service + " to registry " + getHosts()
                             + " on destroy, cause: " + t.getMessage(), t);
                 }
+            });
+        });
 
-            }
-        }
-        Map<String, Set<NotifyListener>> destroySubscribed = new HashMap<>(getSubscribed());
-        if (!destroySubscribed.isEmpty()) {
-            for (Map.Entry<String, Set<NotifyListener>> entry : destroySubscribed.entrySet()) {
-                String service = entry.getKey();
-                for (NotifyListener listener : entry.getValue()) {
-                    try {
-                        unsubscribe(service, listener);
-                        if (logger.isInfoEnabled()) {
-                            logger.info("Destroy unsubscribe service " + service);
-                        }
-                    } catch (Throwable t) {
-                        logger.warn("Failed to unsubscribe service " + service + " to registry " + getHosts()
-                                + " on destroy, cause: " + t.getMessage(), t);
-                    }
-                }
-            }
-        }
+//        if (!destroySubscribed.isEmpty()) {
+//            for (Map.Entry<String, Set<NotifyListener>> entry : destroySubscribed.entrySet()) {
+//                String service = entry.getKey();
+//                for (NotifyListener listener : entry.getValue()) {
+//                    try {
+//                        unsubscribe(service, listener);
+//                        if (logger.isInfoEnabled()) {
+//                            logger.info("Destroy unsubscribe service " + service);
+//                        }
+//                    } catch (Throwable t) {
+//                        logger.warn("Failed to unsubscribe service " + service + " to registry " + getHosts()
+//                                + " on destroy, cause: " + t.getMessage(), t);
+//                    }
+//                }
+//            }
+//        }
     }
 
     public String getHosts() {

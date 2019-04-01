@@ -36,14 +36,11 @@ public abstract class FailbackRegistry extends AbstractRegistry {
 
     public void init() {
         logger.debug("init failback register");
-        this.retryFuture = retryExecutor.scheduleWithFixedDelay(new Runnable() {
-            public void run() {
-                // 检测并连接注册中心
-                try {
-                    retry();
-                } catch (Throwable t) { // 防御性容错
-                    logger.error("Unexpected error occur at failed retry, cause: " + t.getMessage(), t);
-                }
+        this.retryFuture = retryExecutor.scheduleWithFixedDelay(() -> {
+            try {
+                retry();
+            } catch (Throwable t) { // 防御性容错
+                logger.error("Unexpected error occur at failed retry, cause: " + t.getMessage(), t);
             }
         }, retryPeriod, retryPeriod, TimeUnit.MILLISECONDS);
     }
@@ -256,23 +253,20 @@ public abstract class FailbackRegistry extends AbstractRegistry {
 
         if (!failedRegistered.isEmpty()) {
             Set<Service> failed = new HashSet<>(failedRegistered);
-            if (failed.size() > 0) {
-                logger.info("Retry register " + failed);
-                try {
-                    for (Service service : failed) {
-                        try {
-                            doRegister(service);
-                            failedRegistered.remove(service);
-                        } catch (Throwable t) { // 忽略所有异常，等待下次重试
-                            logger.warn(
-                                    "Failed to retry register " + failed + ", waiting for again, cause: "
-                                            + t.getMessage(), t);
-                        }
+            try {
+                failed.forEach(service -> {
+                    try {
+                        doRegister(service);
+                        failedRegistered.remove(service);
+                    } catch (Throwable t) { // 忽略所有异常，等待下次重试
+                        logger.warn(
+                                "Failed to retry register " + failed + ", waiting for again, cause: "
+                                        + t.getMessage(), t);
                     }
-                } catch (Throwable t) { // 忽略所有异常，等待下次重试
-                    logger.warn("Failed to retry register " + failed + ", waiting for again, cause: " + t.getMessage(),
-                            t);
-                }
+                });
+            } catch (Throwable t) { // 忽略所有异常，等待下次重试
+                logger.warn("Failed to retry register " + failed + ", waiting for again, cause: " + t.getMessage(),
+                        t);
             }
         }
         if (!failedUnregistered.isEmpty()) {
